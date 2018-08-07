@@ -11,6 +11,46 @@ function get_current_tab(callback) {
 	});
 }
 
+function encode_url(url) {
+	return "URLTO:" + url;
+}
+
+chrome.runtime.onInstalled.addListener(function () { // Called once on install. Preferable to global code
+	
+	chrome.contextMenus.create({
+		"title": "Make QR code of this link",
+		"id": "menu_link",
+		"contexts": ["link"]
+	});
+	
+	chrome.contextMenus.create({
+		"title": "Make QR code of this image",
+		"id": "menu_image",
+		"contexts": ["image"]
+	});
+	
+	chrome.contextMenus.create({
+		"title": "Make QR code of this text",
+		"id": "menu_text",
+		"contexts": ["selection"]
+	});
+	
+});
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) { // Instead of addListener({"onclick": function(){}})
+	// if (info.menuItemId === "menu_page") {
+	// 	global_state.content = info
+	// } else
+	
+	if (info.menuItemId === "menu_link") {
+		global_state.content = encode_url(info.linkUrl);
+	} else if (info.menuItemId === "menu_image") {
+		global_state.content = encode_url(info.srcUrl);
+	} else if (info.menuItemId === "menu_text") {
+		global_state.content = info.selectionText;
+	}
+});
+
 // chrome.browserAction.onClicked.addListener(function(tab) {
 //     url = tab.url;
  //   body_string = encodeURIComponent(url);
@@ -42,7 +82,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.name == "get_content") {
 		if (global_state.content === null) {
 			get_current_tab(function (url) {
-				sendResponse({"content": "URLTO:" + url, "type": "url"})
+				sendResponse({"content": encode_url(url), "type": "url"});
 			});
 			return true; // https://stackoverflow.com/q/22696142 like wtf isnt this default
 		} else {
