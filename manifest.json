@@ -1,0 +1,21 @@
+{
+	"name": "URL Transmitter",
+	"version": "2.0",
+	"description": "Opens a new window with a QR code of the current page.",
+	"author": "dzil123",
+	"incognito": "split",
+	
+	"permissions": ["tabs", "<all_urls>", "contextMenus"],
+	"background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "browser_action": {
+    	"default_title": "Transmit!",
+    	"default_popup": "popup.html"
+    },
+    "icons": {
+    	"128": "icon_128.png"
+    },
+	"manifest_version": 2
+}
