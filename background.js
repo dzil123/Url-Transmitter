@@ -11,6 +11,20 @@ function get_current_tab(callback) {
 	});
 }
 
+chrome.runtime.onInstalled.addListener(function () { // Called once on install. Preferable to global code
+	chrome.contextMenus.create({
+		"title": "Make QR code",
+		"id": "menu_all_1",
+		"contexts": ["all"]
+	});
+});
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) { // Instead of addListener({"onclick": function(){}})
+	if (info.menuItemId === "menu_all_1") {
+		
+	}
+});
+
 // chrome.browserAction.onClicked.addListener(function(tab) {
 //     url = tab.url;
  //   body_string = encodeURIComponent(url);
