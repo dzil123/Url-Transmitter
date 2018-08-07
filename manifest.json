@@ -1,6 +1,6 @@
 {
 	"name": "URL Transmitter",
-	"version": "2.0",
+	"version": "3.0",
 	"description": "Opens a new window with a QR code of the current page.",
 	"author": "dzil123",
 	"incognito": "split",
