@@ -1,4 +1,4 @@
-SIZE = 500;
+SIZE = 400;
 
 function update_qr_code() {
 	chrome.runtime.sendMessage({"name": "get_content"}, function(response) {
@@ -28,17 +28,24 @@ function update_qr_code() {
 // 	// });
 // };
 
+
 function set_qr_code(content) {
 	body_string = encodeURIComponent(content); // Does not care about protocol or URI type
-	request_url = "https://api.qrserver.com/v1/create-qr-code/?data=" + body_string + "&size=" + SIZE + "x" + SIZE + "&format=png&margin=0&ecc=M&qzone=2"; // png is smaller than svg
+    root = document.getElementById("root");
+    
+    var qrcode = new QRCode(root, {
+        text: body_string,
+        width: SIZE,
+        height: SIZE,
+        correctLevel: QRCode.CorrectLevel.M
+    });
 	
-	img = document.getElementById("qr");
-	img.src = request_url;
-	setTimeout(function() {
-		img.width = SIZE;
-		img.height = SIZE;
-	}, 500); // Downloading image takes long time
-	
+    img = document.getElementById("qr");
+    img.remove();
+    
+    root.width = SIZE;
+    root.height = SIZE;
+    root.title = content;
 }
 
 function onload() {
